@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string longest_symmetrical_substring(string s) {
+    int n = s.size();
+    vector<vector<bool>> dp(n, vector<bool>(n, false));
+    int maxLength = 1;
+    int start = 0;
+    for (int i = 0; i < n; i++)
+        dp[i][i] = true;
+    for (int cl = 2; cl <= n; cl++) {
+        for (int i = 0; i < n - cl + 1; i++) {
+            int end = i + cl - 1;
+            if (s[i] == s[end] && (end - i < 3 || dp[i + 1][end - 1])) {
+                dp[i][end] = true;
+                if (cl > maxLength) {
+                    maxLength = cl;
+                    start = i;
+                }
+            }
+        }
+    }
+
+    return s.substr(start, maxLength);
+}
+
+int main() {
+    string s;
+    cin >> s;
+    cout << longest_symmetrical_substring(s);
+    return 0;
+}
